@@ -44,4 +44,4 @@ class Donation(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
-        return f'Donation from {self.user.name} - {self.quantity} bag(s)'
+        return f'Donation from user: {self.user} - {self.quantity} bag(s)'
