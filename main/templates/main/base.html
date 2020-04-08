@@ -12,31 +12,32 @@
 {% block body %}
 	<header class="header--main-page">
 		{% block navbar %}
-		<nav class="container container--70">
-			{% block auth %}
-				<ul class="nav--actions">
-					<li><a href="{% url 'login' %}" class="btn btn--small btn--without-border">Zaloguj</a></li>
-					<li><a href="{% url 'register' %}" class="btn btn--small btn--highlighted">Załóż konto</a></li>
-				</ul>
-			{% endblock %}
-			{% block nav-items %}
-				<ul>
-					<li><a href="{% url 'landing-page' %}" class="btn btn--without-border active">Start</a></li>
-					<li><a href="/#steps" class="btn btn--without-border">O co chodzi?</a></li>
-					<li><a href="/#about-us" class="btn btn--without-border">O nas</a></li>
-					<li><a href="/#help" class="btn btn--without-border">Fundacje i organizacje</a></li>
-					{#          <li><a href="form.html" class="btn btn--without-border">Przekaż dary</a></li>#}
-					<li><a href="/#contact" class="btn btn--without-border">Kontakt</a></li>
-				</ul>
-			{% endblock %}
-		</nav>
+			<nav class="container container--70">
+				{% block auth %}
+					<ul class="nav--actions">
+						<li><a href="{% url 'login' %}" class="btn btn--small btn--without-border">Zaloguj</a></li>
+						<li><a href="{% url 'register' %}" class="btn btn--small btn--highlighted">Załóż konto</a></li>
+					</ul>
+				{% endblock %}
+				{% block nav-items %}
+					<ul>
+						<li><a href="{% url 'landing-page' %}" class="btn btn--without-border active">Start</a></li>
+						<li><a href="/#steps" class="btn btn--without-border">O co chodzi?</a></li>
+						<li><a href="/#about-us" class="btn btn--without-border">O nas</a></li>
+						<li><a href="/#help" class="btn btn--without-border">Fundacje i organizacje</a></li>
+						{% block gifts %}
+							<li><a href="{% url 'add-donation' %}" class="btn btn--without-border" type="hidden">Przekaż dary</a></li>
+						{% endblock %}
+						<li><a href="/#contact" class="btn btn--without-border">Kontakt</a></li>
+					</ul>
+				{% endblock %}
+			</nav>
 		{% endblock %}
-	</header>
-{#{% block form %}#}
-{#{% endblock %}#}
-{% block section %}
 
-{% endblock %}
+	</header>
+	{#{% block form %}#}
+	{#{% endblock %}#}
+	{% block section %}{% endblock %}
 
 {% endblock %}
 
