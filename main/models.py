@@ -13,8 +13,8 @@ class Category(models.Model):
 
 class Institution(models.Model):
     FOUNDATION = 'found'
-    NON_GOVERNMENTAL_ORGANIZATION = 'non gov org'
-    LOCAL_COLLECTION = 'loc org'
+    NON_GOVERNMENTAL_ORGANIZATION = 'non_gov_org'
+    LOCAL_COLLECTION = 'loc_org'
     TYPES = (
         (FOUNDATION, _('Foundation')),
         (NON_GOVERNMENTAL_ORGANIZATION, _('Non governmental organization')),
@@ -27,7 +27,7 @@ class Institution(models.Model):
     categories = models.ManyToManyField('Category', related_name='institutions')
 
     def __str__(self):
-        return f'{self.name} ({self.get_type_display()})'
+        return f'{self.name} ({self.type})'
 
 
 class Donation(models.Model):
