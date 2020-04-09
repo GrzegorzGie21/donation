@@ -17,6 +17,7 @@ from django.contrib import admin
 from django.urls import path
 
 from main.views import (LandingPage, LoginPage, RegisterPage, AddDonationView, )
+from users.views import RegisterPage
 
 urlpatterns = [
     path('admin/', admin.site.urls),

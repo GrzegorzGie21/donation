@@ -36,11 +36,6 @@ class LoginPage(View):
         return render(request, 'main/login.html')
 
 
-class RegisterPage(View):
-    def get(self, request):
-        return render(request, 'main/register.html')
-
-
 class AddDonationView(View):
     def get(self, request):
         return render(request, 'main/add_donation.html')

@@ -14,7 +14,7 @@ class MyUserAdmin(UserAdmin):
     list_filter = ['email', 'city', 'is_staff', 'is_active']
     fieldsets = (
         (None, {'fields': ('email', 'password',), }),
-        ('Personal info', {'fields': (('first_name', 'last_name'), 'username', 'city',)}),
+        ('Personal info', {'fields': (('first_name', 'last_name'), 'city',)}),
         ('Permissions', {'fields': ('is_staff', 'is_active', 'is_superuser',),
                          'classes': ('collapse',)}),
     )
