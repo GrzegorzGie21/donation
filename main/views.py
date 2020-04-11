@@ -1,5 +1,6 @@
-from django.db.models import F, Sum, Count
-from django.shortcuts import render
+from django.contrib.auth import authenticate, login, logout
+from django.db.models import Sum
+from django.shortcuts import render, redirect
 from django.views import View
 
 from main.models import Donation, Institution
@@ -9,7 +10,6 @@ from main.models import Donation, Institution
 class LandingPage(View):
     def get(self, request):
         bags, institutions = self.get_bags_and_institutions()
-        print(bags)
         context = {'bags': bags.get('quantity__sum'),
                    'institutions': institutions,
                    'foundations': self.get_institutions_by_type('found'),
@@ -32,9 +32,26 @@ class LandingPage(View):
         # institutions_per_type = Institution.objects.values('type').annotate(all_institutions=F('name'))
         return institutions_per_type
 
+
 class LoginPage(View):
     def get(self, request):
         return render(request, 'main/login.html')
+
+    def post(self, request):
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+        user = authenticate(email=email, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect('landing-page')
+        else:
+            return redirect('register')
+
+
+class LogoutPage(View):
+    def get(self, request):
+        logout(request)
+        return redirect('login')
 
 
 class AddDonationView(View):
