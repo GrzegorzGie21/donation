@@ -9,7 +9,8 @@ from main.models import Donation, Institution
 class LandingPage(View):
     def get(self, request):
         bags, institutions = self.get_bags_and_institutions()
-        context = {'bags': bags.get('quantity_sum'),
+        print(bags)
+        context = {'bags': bags.get('quantity__sum'),
                    'institutions': institutions,
                    'foundations': self.get_institutions_by_type('found'),
                    'non_gov_org': self.get_institutions_by_type('non gov org'),
