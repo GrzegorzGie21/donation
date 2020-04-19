@@ -1,9 +1,10 @@
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Sum
 from django.shortcuts import render, redirect
 from django.views import View
 
-from main.models import Donation, Institution
+from main.models import Donation, Institution, Category
 
 
 # Create your views here.
@@ -54,6 +55,17 @@ class LogoutPage(View):
         return redirect('login')
 
 
-class AddDonationView(View):
+class AddDonationView(LoginRequiredMixin, View):
+    login_url = 'login'
+
     def get(self, request):
-        return render(request, 'main/add_donation.html')
+        context = {'categories': self.get_all_model_instances(Category, 'name'),
+                   'institutions': self.get_all_model_instances(Institution)}
+        return render(request, 'main/add_donation.html', context)
+
+    def get_all_model_instances(self, model, order=None):
+        if order:
+            model_instances = model.objects.order_by(order)
+        else:
+            model_instances = model.objects.all()
+        return model_instances
