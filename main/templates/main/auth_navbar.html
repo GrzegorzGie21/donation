@@ -2,9 +2,9 @@
 	{% if user.is_authenticated %}
 		<ul class="nav--actions">
 			<li class="logged-user">
-				Witaj {{ request.user.first_name }}
+				Witaj {{ user.first_name }}
 				<ul class="dropdown">
-					<li><a href="#">Profil</a></li>
+					<li><a href="{% url 'user-detail' user.pk %}">Profil</a></li>
 					<li><a href="#">Ustawienia</a></li>
 					{% if user.is_superuser %}
 					<li><a href="/admin">Panel administracyjny</a></li>

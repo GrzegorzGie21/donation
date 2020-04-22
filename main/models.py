@@ -16,8 +16,8 @@ class Institution(models.Model):
     NON_GOVERNMENTAL_ORGANIZATION = 'non_gov_org'
     LOCAL_COLLECTION = 'loc_org'
     TYPES = (
-        (FOUNDATION, _('Foundation')),
-        (NON_GOVERNMENTAL_ORGANIZATION, _('Non governmental organization')),
+        (FOUNDATION, _('Foundation'),),
+        (NON_GOVERNMENTAL_ORGANIZATION, _('Non governmental organization'),),
         (LOCAL_COLLECTION, _('Local collection'),),
     )
 
