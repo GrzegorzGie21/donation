@@ -1,0 +1,39 @@
+{% extends 'main/base.html' %}
+{% block auth %}
+	{% include 'main/auth_navbar.html' %}
+{% endblock %}
+{% block section %}
+	{#	<div class="container container--85">#}
+	{#		<h1>Name:{{ user.first_name }}</h1>#}
+	{#		<h1>Surname:{{ user.last_name }}</h1>#}
+	{#		<h1>Email:{{ user.email }}</h1>#}
+	{#	</div>#}
+
+	<div class="content-section">
+		<div class="media">
+			{#        <img class="rounded-circle account-img" src="{{ user.profile.image.url }}">#}
+			<div class="media-body">
+				<h1>Name:{{ user.first_name }}</h1>
+				<h1>Surname:{{ user.last_name }}</h1>
+				<h1>Email:{{ user.email }}</h1>
+				<h1>Donations:
+					<ol>
+						{% for donation in user.donation_set.all %}
+							<li>{{ donation }}</li>
+							<ul>
+								<li>Institution: {{ donation.institution }}</li>
+								<li>Categories:
+									{% for category in  donation.categories.all %}
+										{{ category.name }}
+									{% endfor %}
+								</li>
+								<li>bags: {{ donation.quantity }}</li>
+								<li>Pick up: {{ donation.pick_up_date }} {{ donation.pick_up_time }}</li>
+							</ul>
+						{% endfor %}
+					</ol>
+				</h1>
+			</div>
+		</div>
+	</div>
+{% endblock %}
