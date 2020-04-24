@@ -235,6 +235,52 @@ document.addEventListener("DOMContentLoaded", function() {
       this.$step.parentElement.hidden = this.currentStep >= 6;
 
       // TODO: get data from inputs and show them in summary
+      // Inputs
+      const gifts = this.$form.querySelectorAll('input.category:checked');
+      const bags = this.$form.querySelector('input#bags');
+      const institute = this.$form.querySelector('input#institution:checked');
+      const address = this.$form.querySelector('input#address');
+      const city = this.$form.querySelector('input#city');
+      const postcode = this.$form.querySelector('input#postcode');
+      const phone = this.$form.querySelector('input#phone');
+      const date = this.$form.querySelector('input#date');
+      const time = this.$form.querySelector('input#time');
+      const moreInfo = this.$form.querySelector('textarea#more_info');
+
+      // summary fields
+      let bagsSummary = this.$form.querySelector('div.summary span#bags');
+      let instituteSummary = this.$form.querySelector('div.summary span#institute');
+      const addressSummary = this.$form.querySelectorAll('#where > li');
+      const dateSummary = this.$form.querySelectorAll('#when > li');
+      const giftsArray = (giftsList) => {
+        let gifts = '';
+        for (let i = 0; i < giftsList.length; i++) {
+          if (i !== giftsList.length - 1) {
+            gifts += giftsList[i].value + ', ';
+          } else {
+            gifts += giftsList[i].value;
+          }
+        }
+        return gifts;
+      }
+
+
+      // fill summary fields with values from input elements
+      bagsSummary.innerHTML = `${bags.value} worków zawierających: ${giftsArray(gifts)}`;
+      instituteSummary.innerHTML = `Dla: ${institute.value}`;
+      addressSummary[0].innerHTML = address.value;
+      addressSummary[1].innerHTML = city.value;
+      addressSummary[2].innerHTML = postcode.value;
+      addressSummary[3].innerHTML = phone.value;
+      dateSummary[0].innerHTML = date.value;
+      dateSummary[1].innerHTML = time.value;
+      dateSummary[2].innerHTML = moreInfo.value;
+
+      // bagsSummary.innerText = this.$form.querySelector('input#bags').value;
+      // for (let i = 0; i < gifts.length; i++) {
+      //     bagsSummary.innerText += gifts[i].innerText;
+      // }
+      // instituteSummary.innerText = this.$form.querySelector('div.title').innerText;
     }
 
     /**

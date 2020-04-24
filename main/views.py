@@ -69,3 +69,26 @@ class AddDonationView(LoginRequiredMixin, View):
         else:
             model_instances = model.objects.all()
         return model_instances
+
+    def post(self, request):
+        kwargs = {
+            'categories': [category for category in request.POST['categories']],
+            'quantity': request.POST['bags'],
+            'organization': request.POST['organization'],
+            'address': request.POST['address'],
+            'city': request.POST['city'],
+            'postcode': request.POST['postcode'],
+            'phone': request.POST['phone'],
+            'data': request.POST['data'],
+            'time': request.POST['time'],
+            'more_info': request.POST['more_info'],
+            'user': request.user
+        }
+        print(kwargs)
+        Donation.objects.create(**kwargs)
+        return redirect('landing-page')
+
+
+class ConfirmDonationView(View):
+    def get(self, request):
+        return render(request, 'main/form-confirmation.html')
