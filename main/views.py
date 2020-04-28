@@ -1,6 +1,7 @@
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Sum
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
 from django.views import View
 
@@ -71,22 +72,24 @@ class AddDonationView(LoginRequiredMixin, View):
         return model_instances
 
     def post(self, request):
-        kwargs = {
-            'categories': [category for category in request.POST['categories']],
-            'quantity': request.POST['bags'],
-            'organization': request.POST['organization'],
-            'address': request.POST['address'],
-            'city': request.POST['city'],
-            'postcode': request.POST['postcode'],
-            'phone': request.POST['phone'],
-            'data': request.POST['data'],
-            'time': request.POST['time'],
-            'more_info': request.POST['more_info'],
-            'user': request.user
-        }
-        print(kwargs)
-        Donation.objects.create(**kwargs)
-        return redirect('landing-page')
+        categories = [category for category in request.POST['categories']],
+        if request.is_ajax():
+            kwargs = {
+                'quantity': request.POST['bags'],
+                'organization': request.POST['institution'],
+                'address': request.POST['address'],
+                'city': request.POST['city'],
+                'postcode': request.POST['zipcode'],
+                'phone': request.POST['phone'],
+                'data': request.POST['pick_up_date'],
+                'time': request.POST['pick_up_time'],
+                'more_info': request.POST['pick_up_comment'],
+                'user': request.user
+            }
+            print(kwargs)
+            Donation.objects.create(**kwargs)
+            return redirect('confirm-donation')
+        return JsonResponse()
 
 
 class ConfirmDonationView(View):

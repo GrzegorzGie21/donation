@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
   /**
    * HomePage - Help section
    */
@@ -66,6 +66,7 @@ document.addEventListener("DOMContentLoaded", function() {
       console.log(page);
     }
   }
+
   const helpSection = document.querySelector(".help");
   if (helpSection !== null) {
     new Help(helpSection);
@@ -136,6 +137,7 @@ document.addEventListener("DOMContentLoaded", function() {
       });
     }
   }
+
   document.querySelectorAll(".form-group--dropdown select").forEach(el => {
     new FormSelect(el);
   });
@@ -143,7 +145,7 @@ document.addEventListener("DOMContentLoaded", function() {
   /**
    * Hide elements when clicked on document
    */
-  document.addEventListener("click", function(e) {
+  document.addEventListener("click", function (e) {
     const target = e.target;
     const tagName = target.tagName;
 
@@ -234,6 +236,8 @@ document.addEventListener("DOMContentLoaded", function() {
       this.$stepInstructions[0].parentElement.parentElement.hidden = this.currentStep >= 6;
       this.$step.parentElement.hidden = this.currentStep >= 6;
 
+
+
       // TODO: get data from inputs and show them in summary
       // Inputs
       const gifts = this.$form.querySelectorAll('input.category:checked');
@@ -264,17 +268,44 @@ document.addEventListener("DOMContentLoaded", function() {
         return gifts;
       }
 
+      const getDataFromInputs = () => {
+        bagsSummary.innerHTML = `${bags.value} worków zawierających: ${giftsArray(gifts)}`;
+        instituteSummary.innerHTML = `Dla: ${institute.value}`;
+        addressSummary[0].innerHTML = address.value;
+        addressSummary[1].innerHTML = city.value;
+        addressSummary[2].innerHTML = postcode.value;
+        addressSummary[3].innerHTML = phone.value;
+        dateSummary[0].innerHTML = date.value;
+        dateSummary[1].innerHTML = time.value;
+        dateSummary[2].innerHTML = moreInfo.value;
+      }
 
+      getDataFromInputs();
       // fill summary fields with values from input elements
-      bagsSummary.innerHTML = `${bags.value} worków zawierających: ${giftsArray(gifts)}`;
-      instituteSummary.innerHTML = `Dla: ${institute.value}`;
-      addressSummary[0].innerHTML = address.value;
-      addressSummary[1].innerHTML = city.value;
-      addressSummary[2].innerHTML = postcode.value;
-      addressSummary[3].innerHTML = phone.value;
-      dateSummary[0].innerHTML = date.value;
-      dateSummary[1].innerHTML = time.value;
-      dateSummary[2].innerHTML = moreInfo.value;
+      const btnSubmit = $('.submit-form');
+      btnSubmit.on('click', function () {
+        $.ajax({
+          url: 'add_donation/',
+          type: 'POST',
+          data: {
+            'quantity': bags.value,
+            'categories': giftsArray(gifts),
+            'institution': institute.value,
+            'address': address.value,
+            'phone': phone.value,
+            'city': city.value,
+            'zipcode': postcode.value,
+            'pick_up_date': date.value,
+            'pick_up_time': time.value,
+            'pick_up_comment': moreInfo.value,
+          },
+          success: function () {
+            console.log('it works!')
+          }
+        })
+        })
+      console.log(btnSubmit);
+
 
       // bagsSummary.innerText = this.$form.querySelector('input#bags').value;
       // for (let i = 0; i < gifts.length; i++) {
@@ -283,17 +314,35 @@ document.addEventListener("DOMContentLoaded", function() {
       // instituteSummary.innerText = this.$form.querySelector('div.title').innerText;
     }
 
+
+
     /**
      * Submit form
      *
      * TODO: validation, send data to server
      */
+    // addDonation() {
+    //   console.log('it works');
+    //   $.ajax({
+    //     url: 'add_donation/',
+    //     type: 'POST',
+    //     data: {
+    //       quantity: bags.value,
+    //
+    //     }
+    //   }).done(function (result) {
+    //     console.log(result);
+    //   })
+    // }
+
     submit(e) {
       e.preventDefault();
       this.currentStep++;
       this.updateForm();
+      // this.addDonation();
     }
   }
+
   const form = document.querySelector(".form--steps");
   if (form !== null) {
     new FormSteps(form);
