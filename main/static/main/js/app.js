@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", function() {
   /**
    * HomePage - Help section
    */
@@ -145,7 +145,7 @@ document.addEventListener("DOMContentLoaded", function () {
   /**
    * Hide elements when clicked on document
    */
-  document.addEventListener("click", function (e) {
+  document.addEventListener("click", function(e) {
     const target = e.target;
     const tagName = target.tagName;
 
@@ -239,7 +239,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
       // TODO: get data from inputs and show them in summary
-      // Inputs
+      //Inputs
+      // console.log('token:' + $.cookie('csrftoken'));
+      // console.log('token:' + form.querySelector('csrftoken'));
+      // console.log('token:' + form.querySelector('csrfmiddlewaretoken'));
+      // console.log('token:' + $('csrfmiddlewaretoken').val());
+      // console.log('token:' + $('input[name="csrfmiddlewaretoken"]').val());
       const gifts = this.$form.querySelectorAll('input.category:checked');
       const bags = this.$form.querySelector('input#bags');
       const institute = this.$form.querySelector('input#institution:checked');
@@ -270,7 +275,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       const getDataFromInputs = () => {
         bagsSummary.innerHTML = `${bags.value} worków zawierających: ${giftsArray(gifts)}`;
-        instituteSummary.innerHTML = `Dla: ${institute.value}`;
+        instituteSummary.innerHTML = `Dla: ${institute.innerText}`;
         addressSummary[0].innerHTML = address.value;
         addressSummary[1].innerHTML = city.value;
         addressSummary[2].innerHTML = postcode.value;
@@ -282,38 +287,30 @@ document.addEventListener("DOMContentLoaded", function () {
 
       getDataFromInputs();
       // fill summary fields with values from input elements
-      const btnSubmit = $('.submit-form');
-      btnSubmit.on('click', function () {
-        $.ajax({
-          url: 'add_donation/',
-          type: 'POST',
-          data: {
-            'quantity': bags.value,
-            'categories': giftsArray(gifts),
-            'institution': institute.value,
-            'address': address.value,
-            'phone': phone.value,
-            'city': city.value,
-            'zipcode': postcode.value,
-            'pick_up_date': date.value,
-            'pick_up_time': time.value,
-            'pick_up_comment': moreInfo.value,
-          },
-          success: function () {
-            console.log('it works!')
-          }
-        })
-        })
-      console.log(btnSubmit);
-
-
-      // bagsSummary.innerText = this.$form.querySelector('input#bags').value;
-      // for (let i = 0; i < gifts.length; i++) {
-      //     bagsSummary.innerText += gifts[i].innerText;
-      // }
-      // instituteSummary.innerText = this.$form.querySelector('div.title').innerText;
+      // const btnSubmit = $('.submit-form');
+      // btnSubmit.on('click', function () {
+      //   $.ajax({
+      //     url: 'add_donation/',
+      //     type: 'POST',
+      //     data: {
+      //       'quantity': bags.value,
+      //       'categories': giftsArray(gifts),
+      //       'institution': institute.value,
+      //       'address': address.value,
+      //       'phone': phone.value,
+      //       'city': city.value,
+      //       'zipcode': postcode.value,
+      //       'pick_up_date': date.value,
+      //       'pick_up_time': time.value,
+      //       'pick_up_comment': moreInfo.value,
+      //     },
+      //     success: function () {
+      //       console.log('it works!')
+      //     }
+      //   })
+      //   })
+      // console.log(btnSubmit);
     }
-
 
 
     /**
@@ -321,6 +318,95 @@ document.addEventListener("DOMContentLoaded", function () {
      *
      * TODO: validation, send data to server
      */
+    getDataFromInputsAndPostWithAjax() {
+      // console.log('token:' + $.cookie('csrftoken'));
+      // console.log('token:' + form.querySelector('csrftoken'));
+      // console.log('token:' + form.querySelector('csrfmiddlewaretoken'));
+      // console.log('token:' + $('csrfmiddlewaretoken'));
+      // console.log('token:' + $('input[name="csrfmiddlewaretoken"]'));
+    //   function getCookie(name) {
+    //     let cookieValue = null;
+    //     if (document.cookie && document.cookie !== '') {
+    //         let cookies = document.cookie.split(';');
+    //         for (let i = 0; i < cookies.length; i++) {
+    //             let cookie = jQuery.trim(cookies[i]);
+    //             // Does this cookie string begin with the name we want?
+    //             if (cookie.substring(0, name.length + 1) === (name + '=')) {
+    //                 cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+    //                 break;
+    //             }
+    //         }
+    //     }
+    //     return cookieValue;
+    // }
+    // let csrftoken = getCookie('csrftoken');
+      $.ajax({
+        url: '/add-donation/',
+        type: 'POST',
+        headers: {
+          // 'X-CSRFToken': form.querySelector('csrfmiddlewaretoken')[0].value
+          'X-CSRFToken': $('input[name="csrfmiddlewaretoken"]').val()
+        },
+
+        data: {
+          // 'gifts': form.querySelectorAll('input.category:checked').value,
+          'bags': form.querySelector('input#bags').value,
+          'institution': form.querySelector('input#institution:checked').value,
+          'address': form.querySelector('input#address').value,
+          'city': form.querySelector('input#city').value,
+          'postcode': form.querySelector('input#postcode').value,
+          'phone': form.querySelector('input#phone').value,
+          'data': form.querySelector('input#date').value,
+          'time': form.querySelector('input#time').value,
+          'more_info': form.querySelector('textarea#more_info').value,
+        },
+        success: function () {
+          window.location='/confirm-donation/'
+        }
+      })
+      // const gifts = this.$form.querySelectorAll('input.category:checked');
+      // const bags = form.querySelector('input#bags');
+      // const institute = this.$form.querySelector('input#institution:checked');
+      // const address = this.$form.querySelector('input#address');
+      // const city = this.$form.querySelector('input#city');
+      // const postcode = this.$form.querySelector('input#postcode');
+      // const phone = this.$form.querySelector('input#phone');
+      // const date = this.$form.querySelector('input#date');
+      // const time = this.$form.querySelector('input#time');
+      // const moreInfo = this.$form.querySelector('textarea#more_info');
+      //
+      // // summary fields
+      // let bagsSummary = form.querySelector('div.summary span#bags');
+      // let instituteSummary = this.$form.querySelector('div.summary span#institute');
+      // const addressSummary = this.$form.querySelectorAll('#where > li');
+      // const dateSummary = this.$form.querySelectorAll('#when > li');
+      // const giftsArray = (giftsList) => {
+      //   let gifts = '';
+      //   for (let i = 0; i < giftsList.length; i++) {
+      //     if (i !== giftsList.length - 1) {
+      //       gifts += giftsList[i].value + ', ';
+      //     } else {
+      //       gifts += giftsList[i].value;
+      //     }
+      //   }
+      //   return gifts;
+      // }
+      //
+      // const getDataFromInputs = () => {
+      //   bagsSummary.innerHTML = `${bags.value} worków zawierających: ${giftsArray(gifts)}`;
+      //   instituteSummary.innerHTML = `Dla: ${institute.value}`;
+      //   addressSummary[0].innerHTML = address.value;
+      //   addressSummary[1].innerHTML = city.value;
+      //   addressSummary[2].innerHTML = postcode.value;
+      //   addressSummary[3].innerHTML = phone.value;
+      //   dateSummary[0].innerHTML = date.value;
+      //   dateSummary[1].innerHTML = time.value;
+      //   dateSummary[2].innerHTML = moreInfo.value;
+      // }
+      //
+      // getDataFromInputs();
+
+    }
     // addDonation() {
     //   console.log('it works');
     //   $.ajax({
@@ -340,6 +426,7 @@ document.addEventListener("DOMContentLoaded", function () {
       this.currentStep++;
       this.updateForm();
       // this.addDonation();
+      this.getDataFromInputsAndPostWithAjax();
     }
   }
 

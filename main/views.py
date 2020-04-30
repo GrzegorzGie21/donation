@@ -72,25 +72,26 @@ class AddDonationView(LoginRequiredMixin, View):
         return model_instances
 
     def post(self, request):
-        categories = [category for category in request.POST['categories']],
+        # categories = [category for category in request.POST['categories']],
         if request.is_ajax():
+            institution = Institution.objects.get(name=request.POST['institution'])
             kwargs = {
                 'quantity': request.POST['bags'],
-                'organization': request.POST['institution'],
+                'institution': institution,
                 'address': request.POST['address'],
                 'city': request.POST['city'],
-                'postcode': request.POST['zipcode'],
-                'phone': request.POST['phone'],
-                'data': request.POST['pick_up_date'],
-                'time': request.POST['pick_up_time'],
-                'more_info': request.POST['pick_up_comment'],
+                'zip_code': request.POST['postcode'],
+                'phone_number': request.POST['phone'],
+                'pick_up_date': request.POST['data'],
+                'pick_up_time': request.POST['time'],
+                'pick_up_comment': request.POST['more_info'],
                 'user': request.user
             }
             print(kwargs)
             Donation.objects.create(**kwargs)
             return redirect('confirm-donation')
-        return JsonResponse()
-
+        else:
+            HttpResponse('error')
 
 class ConfirmDonationView(View):
     def get(self, request):

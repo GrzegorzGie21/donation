@@ -23,6 +23,7 @@
 		<div class="form--steps-counter">Krok <span>1</span>/5</div>
 
 		<form action="{% url 'confirm-donation' %}" method="post">
+		{% csrf_token %}
 			<!-- STEP 1: class .active is switching steps -->
 			<div data-step="1" class="active">
 				<h3>Zaznacz co chcesz oddać:</h3>
@@ -114,8 +115,7 @@
 						<span class="description">
                   <div class="title">{{ institution }}</div>
                   <div class="subtitle">
-                    Cel i misja: Pomoc dla osób nie posiadających miejsca
-                    zamieszkania
+                    {{ institution.description }}
                   </div>
                 </span>
 					</label>
